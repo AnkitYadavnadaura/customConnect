@@ -14,6 +14,10 @@
     "wagmi": "latest",
     "@web3modal/react": "latest",
     "@web3modal/ethereum": "latest",
-    "ethers": "latest"
+    "ethers": "latest",
+    "@reown/appkit": "latest",
+    "@reown/appkit-adapter-wagmi": "latest",
+    "@tanstack/react-query": "latest"
   }
 }
+
