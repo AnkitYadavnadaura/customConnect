@@ -7,9 +7,8 @@ import { arbitrum, mainnet } from '@reown/appkit/networks'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-const projectId = 'your_project_id_here'; // Replace with actual Web3Modal project ID
+const projectId = 'd592fb01c4b7967f0f7d8ce6f06a4fc3'; // Replace with actual Web3Modal project ID
 
-const projectId = 'YOUR_PROJECT_ID'
 const queryClient = new QueryClient()
 
 const metadata = { //optional
