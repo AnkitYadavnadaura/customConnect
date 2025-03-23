@@ -1,11 +1,12 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, goerli } from 'wagmi/chains';
+import { getAccount } from '@wagmi/core'; // ✅ Use getAccount instead of getNetwork
+
+import { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 
 const chains = [mainnet, goerli];
 const projectId = '38b8fc581b512b74d146334537f16cfd';
