@@ -2,52 +2,52 @@
 
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
-import { Web3Modal } from '@web3modal/react';
-import { configureChains, createConfig, WagmiConfig, useAccount } from 'wagmi';
-import { mainnet, goerli } from 'wagmi/chains';
-import { injected } from 'wagmi/connectors';
+import { createAppKit } from '@reown/appkit/react'
+import { arbitrum, mainnet } from '@reown/appkit/networks'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 const projectId = 'your_project_id_here'; // Replace with actual Web3Modal project ID
 
-const chains = [mainnet, goerli];
+const projectId = 'YOUR_PROJECT_ID'
+const queryClient = new QueryClient()
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
+const metadata = { //optional
+    name: 'AppKit',
+    description: 'AppKit Example',
+    url: 'https://example.com',
+    icons: ['https://avatars.githubusercontent.com/u/179229932']
+}
 
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: [injected()],
-  publicClient,
-});
+/* Remove the existing Wagmi Config */
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
-const ethereumClient = new EthereumClient(wagmiConfig, chains);
+/* Create the Wagmi adapter */
+ const wagmiAdapter = new WagmiAdapter({
+  networks: [mainnet, arbitrum],
+  projectId
+})
 
-export default function Home() {
-  const { address, isConnected } = useAccount();
-  const [balance, setBalance] = useState<string | null>(null);
+// import { createAppKit } from '@reown/appkit/react'
+ createAppKit({
+ adapters: [wagmiAdapter],
+ networks: [mainnet, arbitrum],
+ metadata: metadata,
+ projectId,
+ features: {
+   analytics: true,
+ }
+})
 
-  useEffect(() => {
-    if (isConnected && address) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      provider.getBalance(address).then((bal) => {
-        setBalance(ethers.utils.formatEther(bal));
-      });
-    }
-  }, [isConnected, address]);
-
+export default function App() {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
-        <h1>Ethereum Wallet Connection</h1>
-        {isConnected ? (
-          <div>
-            <p>Connected: {address}</p>
-            <p>Balance: {balance} ETH</p>
-          </div>
-        ) : (
-          <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
-        )}
-      </div>
-    </WagmiConfig>
-  );
+    <>
+      <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+
+      <QueryClientProvider client={queryClient}>
+          <HomePage />
+       </QueryClientProvider>
+      </WagmiProvider>
+    </>
+  )
 }
