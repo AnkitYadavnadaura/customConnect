@@ -20,7 +20,8 @@
     "@tanstack/react-query": "latest",
     "typescript":"latest",
     "@types/react":"latest",
-    "pino-pretty":"latest"
+    "pino-pretty":"latest",
+    "viem": "latest",
     
   }
 }
