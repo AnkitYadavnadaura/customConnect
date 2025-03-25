@@ -21,7 +21,7 @@
     "typescript":"latest",
     "@types/react":"latest",
     "pino-pretty":"latest",
-    "viem": "latest",
+    "viem": "latest"
     
   }
 }
