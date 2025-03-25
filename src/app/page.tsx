@@ -19,7 +19,7 @@ const metadata = { //optional
 }
 
 /* Remove the existing Wagmi Config */
-const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
+//const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 /* Create the Wagmi adapter */
  const wagmiAdapter = new WagmiAdapter({
