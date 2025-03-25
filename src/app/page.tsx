@@ -6,6 +6,8 @@ import { createAppKit } from '@reown/appkit/react'
 import { arbitrum, mainnet } from '@reown/appkit/networks'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
+
 const projectId = 'd592fb01c4b7967f0f7d8ce6f06a4fc3'; // Replace with actual Web3Modal project ID
 
 const queryClient = new QueryClient()
