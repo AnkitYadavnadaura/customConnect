@@ -17,7 +17,11 @@
     "ethers": "latest",
     "@reown/appkit": "latest",
     "@reown/appkit-adapter-wagmi": "latest",
-    "@tanstack/react-query": "latest"
+    "@tanstack/react-query": "latest",
+    "typescript":"latest",
+    "@types/react":"latest",
+    "pino-pretty":"latest"
+    
   }
 }
 
