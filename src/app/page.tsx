@@ -45,7 +45,7 @@ export default function App() {
       <WagmiProvider config={wagmiAdapter.wagmiConfig}>
 
       <QueryClientProvider client={queryClient}>
-          <HomePage />
+          <h1>Welcome to Home Page</h1>
        </QueryClientProvider>
       </WagmiProvider>
     </>
