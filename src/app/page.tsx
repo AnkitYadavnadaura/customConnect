@@ -13,7 +13,7 @@ function ConnectWallet() {
   return <WalletOptions />
 }
 
-function App() {
+export default function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}> 
