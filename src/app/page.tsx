@@ -1,69 +1,23 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import { createAppKit } from '@reown/appkit/react'
-import { arbitrum, mainnet } from '@reown/appkit/networks'
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/core/connectors/injected";
-
-const projectId = 'd592fb01c4b7967f0f7d8ce6f06a4fc3'; // Replace with actual Web3Modal project ID
+import { WagmiProvider, useAccount } from 'wagmi'
+import { config } from './config'
+import { Account } from './account'
+import { WalletOptions } from './wallet-options'
 
 const queryClient = new QueryClient()
 
-const metadata = { //optional
-    name: 'AppKit',
-    description: 'AppKit Example',
-    url: 'https://example.com',
-    icons: ['https://avatars.githubusercontent.com/u/179229932']
+function ConnectWallet() {
+  const { isConnected } = useAccount()
+  if (isConnected) return <Account />
+  return <WalletOptions />
 }
 
-/* Remove the existing Wagmi Config */
-//const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
-
-/* Create the Wagmi adapter */
- const wagmiAdapter = new WagmiAdapter({
-  networks: [mainnet, arbitrum],
-  projectId
-})
-
-// import { createAppKit } from '@reown/appkit/react'
- createAppKit({
- adapters: [wagmiAdapter],
- networks: [mainnet, arbitrum],
- metadata: metadata,
- projectId,
- features: {
-   analytics: true,
- }
-})
-
-export default function App() {
-  const { address, isConnected } = useAccount();
-  const { connect } = useConnect({ connector: new InjectedConnector() });
-  const { disconnect } = useDisconnect();
+function App() {
   return (
-    <>
-      <WagmiProvider config={wagmiAdapter.wagmiConfig}>
-
-      <QueryClientProvider client={queryClient}>
-          <h1>Welcome to Home Page</h1>
-          <div>
-      <h1>Web3 App</h1>
-      {isConnected ? (
-        <>
-          <p>Connected: {address}</p>
-          <button onClick={disconnect}>Disconnect</button>
-        </>
-      ) : (
-        <button onClick={() => connect()}>Connect Wallet</button>
-      )}
-    </div>
-       </QueryClientProvider>
-      </WagmiProvider>
-    </>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}> 
+        <ConnectWallet />
+      </QueryClientProvider> 
+    </WagmiProvider>
   )
 }
