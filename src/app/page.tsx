@@ -8,7 +8,7 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { InjectedConnector } from "wagmi/core/connectors/injected";
 
 const projectId = 'd592fb01c4b7967f0f7d8ce6f06a4fc3'; // Replace with actual Web3Modal project ID
 
