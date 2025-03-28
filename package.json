@@ -22,7 +22,8 @@
     "@types/react":"latest",
     "pino-pretty":"latest",
     "viem": "latest",
-     "@rainbow-me/rainbowkit":"latest"
+     "@rainbow-me/rainbowkit":"latest",
+    "lucide-react":"latest"
     
   }
 }
