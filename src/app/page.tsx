@@ -4,6 +4,7 @@ import { WagmiProvider, useAccount } from 'wagmi'
 import { config } from './config'
 import { Account } from './account'
 import { WalletOptions } from './wallet-options'
+import { Home } from './home'
 
 const queryClient = new QueryClient()
 
@@ -18,6 +19,7 @@ export default function App() {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}> 
         <ConnectWallet />
+        <Home />
       </QueryClientProvider> 
     </WagmiProvider>
   )
