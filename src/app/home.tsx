@@ -5,7 +5,7 @@ import { Avatar } from "../components/avatar";
 import { Input } from "../components/input";
 import { Video, Image, MessageSquare } from "lucide-react";
 
-const Home = () => {
+export const Home = () => {
   return (
     <div className="max-w-4xl mx-auto p-4">
       {/* Post Input Box */}
