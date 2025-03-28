@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent } from "@/components/card";
+import { Card, CardContent } from "../components/card";
 import { Button } from "../components/button";
 import { Avatar } from "../components/avatar";
 import { Input } from "../components/input";
