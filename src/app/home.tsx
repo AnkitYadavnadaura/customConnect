@@ -1,8 +1,8 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/card";
+import { Button } from "@/components/button";
+import { Avatar } from "@/components/avatar";
+import { Input } from "@/components/input";
 import { Video, Image, MessageSquare } from "lucide-react";
 
 const Home = () => {
