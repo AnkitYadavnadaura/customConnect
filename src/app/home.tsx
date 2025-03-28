@@ -3,7 +3,7 @@ import { Card, CardContent } from "../components/card";
 import { Button } from "../components/button";
 import { Avatar } from "../components/avatar";
 import { Input } from "../components/input";
-import { Video, Image, MessageSquare } from "lucide-react";
+import "lucide-react"
 
 export const Home = () => {
   return (
