@@ -1,9 +1,16 @@
 import React from "react";
 
-export const Card = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <div className={`rounded-lg border p-4 shadow-sm ${className}`}>{children}</div>
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const Card: React.FC<CardProps> = ({ children, className }) => (
+  <div className={`rounded-lg border p-4 shadow-sm ${className || ""}`}>
+    {children}
+  </div>
 );
 
-export const CardContent = ({ children }: { children: React.ReactNode }) => (
+export const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="mt-2">{children}</div>
 );
