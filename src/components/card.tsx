@@ -11,6 +11,6 @@ export const Card: React.FC<CardProps> = ({ children, className }) => (
   </div>
 );
 
-export const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="mt-2">{children}</div>
+export const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
+  <div className={`mt-2 ${className || ""}`}>{children}</div>
 );
