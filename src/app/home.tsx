@@ -76,11 +76,12 @@ const [domains, setDomains] = useState<DomainInfo[]>([]);
     loadSubdomains(selectedDomain);
   }
 
-  async function loadSubdomains(parent) {
-    if (!contract || !account) return;
-    const subs = await contract.listSubdomains(parent);
-    setSubdomains(subs);
-  }
+  async function loadSubdomains(parent: string) {
+  if (!contract || !account) return;
+  const subs = await contract.listSubdomains(parent);
+  setSubdomains(subs);
+}
+
 
   async function resolveName(name) {
     if (!contract || !account) return;
