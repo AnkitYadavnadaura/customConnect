@@ -8,7 +8,7 @@ const CONTRACT_ADDRESS = "0xYourContractAddressHere";
 
 export function Home() {
   const [account, setAccount] = useState("");
-  const [contract, setContract] = useState(null);
+  const [contract, setContract] = useState<Contract | null>(null);
   const [domains, setDomains] = useState([]);
   const [selectedDomain, setSelectedDomain] = useState("");
   const [newDomain, setNewDomain] = useState("");
