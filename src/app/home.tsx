@@ -32,10 +32,12 @@ export function Home() {
   }, []);
 
   async function register() {
-    const tx = await contract.register(newDomain, newMeta, {
-      value: ethers.parseEther("0.01"),
-    });
-    await tx.wait();
+  if (!contract) return;
+
+  const tx = await contract.register(newDomain, newMeta, {
+    value: ethers.parseEther("0.01"),
+  });
+  await tx.wait();
     setNewDomain("");
     setNewMeta("");
     fetchDomains();
