@@ -83,7 +83,7 @@ const [domains, setDomains] = useState<DomainInfo[]>([]);
 }
 
 
-  async function resolveName(name) {
+  async function resolveName(name: string) {
     if (!contract || !account) return;
     try {
       const meta = await contract.resolve(name);
