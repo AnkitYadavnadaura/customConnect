@@ -44,6 +44,7 @@ export function Home() {
   }
 
   async function fetchDomains() {
+    if (!contract || !account) return;
     let list = [];
     for (let i = 1; i < 100; i++) {
       try {
@@ -61,6 +62,7 @@ export function Home() {
   }
 
   async function addSubdomain() {
+    if (!contract || !account) return;
     const tx = await contract.addSubdomain(selectedDomain, sub, subMeta);
     await tx.wait();
     setSub("");
@@ -69,11 +71,13 @@ export function Home() {
   }
 
   async function loadSubdomains(parent) {
+    if (!contract || !account) return;
     const subs = await contract.listSubdomains(parent);
     setSubdomains(subs);
   }
 
   async function resolveName(name) {
+    if (!contract || !account) return;
     try {
       const meta = await contract.resolve(name);
       setResolvedMeta(meta);
