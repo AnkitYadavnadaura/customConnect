@@ -10,7 +10,13 @@ const CONTRACT_ADDRESS = "0xYourContractAddressHere";
 export function Home() {
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState<Contract | null>(null);
-  const [domains, setDomains] = useState([]);
+  type DomainInfo = {
+  name: string;
+  expiry: any;
+  metadata: any;
+};
+
+const [domains, setDomains] = useState<DomainInfo[]>([]);
   const [selectedDomain, setSelectedDomain] = useState("");
   const [newDomain, setNewDomain] = useState("");
   const [newMeta, setNewMeta] = useState("");
