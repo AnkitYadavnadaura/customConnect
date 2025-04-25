@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import type { Contract } from "ethers";
 import dnsAbi from "../abi/NFTCryptoDNS.json"; // ABI here
 
 const CONTRACT_ADDRESS = "0xYourContractAddressHere";
