@@ -6,7 +6,7 @@ import dnsAbi from "../abi/NFTCryptoDNS.json"; // ABI here
 
 const CONTRACT_ADDRESS = "0xYourContractAddressHere";
 
-export default function Home() {
+export function Home() {
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState(null);
   const [domains, setDomains] = useState([]);
