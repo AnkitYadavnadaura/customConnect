@@ -1,57 +1,170 @@
-import React from "react";
-import { Card, CardContent } from "../components/card";
-import { Button } from "../components/button";
-import { Avatar } from "../components/avatar";
-import { Input } from "../components/input";
-import "lucide-react"
+// pages/index.tsx (or .jsx if not using TypeScript)
 
-export const Home = () => {
+import { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import dnsAbi from "../abi/NFTCryptoDNS.json"; // ABI here
+
+const CONTRACT_ADDRESS = "0xYourContractAddressHere";
+
+export default function Home() {
+  const [account, setAccount] = useState("");
+  const [contract, setContract] = useState(null);
+  const [domains, setDomains] = useState([]);
+  const [selectedDomain, setSelectedDomain] = useState("");
+  const [newDomain, setNewDomain] = useState("");
+  const [newMeta, setNewMeta] = useState("");
+  const [sub, setSub] = useState("");
+  const [subMeta, setSubMeta] = useState("");
+  const [subdomains, setSubdomains] = useState([]);
+  const [resolvedMeta, setResolvedMeta] = useState("");
+
+  useEffect(() => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      provider.getSigner().then(async (signer) => {
+        const dns = new ethers.Contract(CONTRACT_ADDRESS, dnsAbi, signer);
+        const address = await signer.getAddress();
+        setAccount(address);
+        setContract(dns);
+      });
+    }
+  }, []);
+
+  async function register() {
+    const tx = await contract.register(newDomain, newMeta, {
+      value: ethers.parseEther("0.01"),
+    });
+    await tx.wait();
+    setNewDomain("");
+    setNewMeta("");
+    fetchDomains();
+  }
+
+  async function fetchDomains() {
+    let list = [];
+    for (let i = 1; i < 100; i++) {
+      try {
+        const [owner, expiry, metadata] = await contract.getDomainInfo(
+          `domain${i}`
+        );
+        if (owner.toLowerCase() === account.toLowerCase()) {
+          list.push({ name: `domain${i}`, expiry, metadata });
+        }
+      } catch {
+        break;
+      }
+    }
+    setDomains(list);
+  }
+
+  async function addSubdomain() {
+    const tx = await contract.addSubdomain(selectedDomain, sub, subMeta);
+    await tx.wait();
+    setSub("");
+    setSubMeta("");
+    loadSubdomains(selectedDomain);
+  }
+
+  async function loadSubdomains(parent) {
+    const subs = await contract.listSubdomains(parent);
+    setSubdomains(subs);
+  }
+
+  async function resolveName(name) {
+    try {
+      const meta = await contract.resolve(name);
+      setResolvedMeta(meta);
+    } catch (e) {
+      setResolvedMeta("Not found or expired");
+    }
+  }
+
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      {/* Post Input Box */}
-      <Card className="p-4 mb-4">
-        <div className="flex gap-3 items-center">
-          <Avatar className="w-12 h-12 bg-gray-300" />
-          <Input placeholder="What's on your mind?" className="flex-1" />
-        </div>
-        <div className="flex justify-between mt-3">
-          <Button variant="ghost" className="flex items-center gap-2">
-            <Image size={20} /> Photo
-          </Button>
-          <Button variant="ghost" className="flex items-center gap-2">
-            <Video size={20} /> Video
-          </Button>
-          <Button variant="ghost" className="flex items-center gap-2">
-            <MessageSquare size={20} /> Write
-          </Button>
-        </div>
-      </Card>
+    <div className="max-w-3xl mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">CryptoDNS (Next.js)</h1>
 
-      {/* Posts Feed */}
-      <Card className="p-4">
-        <div className="flex gap-3 items-center">
-          <Avatar className="w-12 h-12 bg-gray-300" />
-          <div>
-            <h4 className="font-bold">John Doe</h4>
-            <p className="text-sm text-gray-500">2h ago</p>
-          </div>
-        </div>
-        <CardContent className="mt-3">
-          <p>Just launched my new project! 🚀</p>
-          <img
-            src="https://via.placeholder.com/400"
-            alt="Post"
-            className="mt-3 rounded-lg w-full"
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold">Register New Domain</h2>
+        <input
+          className="input"
+          placeholder="example"
+          value={newDomain}
+          onChange={(e) => setNewDomain(e.target.value)}
+        />
+        <input
+          className="input"
+          placeholder="Metadata URI"
+          value={newMeta}
+          onChange={(e) => setNewMeta(e.target.value)}
+        />
+        <button className="btn" onClick={register}>
+          Register (0.01 ETH)
+        </button>
+      </div>
+
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold">Your Domains</h2>
+        <button onClick={fetchDomains} className="btn">
+          Load My Domains
+        </button>
+        <ul className="mt-2 space-y-2">
+          {domains.map((d, i) => (
+            <li key={i} className="border p-2 rounded">
+              <strong>{d.name}</strong> - Expires: {new Date(
+                Number(d.expiry) * 1000
+              ).toLocaleDateString()}
+              <div className="text-sm">Metadata: {d.metadata}</div>
+              <button
+                className="btn-sm mt-1"
+                onClick={() => {
+                  setSelectedDomain(d.name);
+                  loadSubdomains(d.name);
+                }}
+              >
+                Manage Subdomains
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {selectedDomain && (
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold">
+            Subdomains of {selectedDomain}
+          </h2>
+          <input
+            className="input"
+            placeholder="sub"
+            value={sub}
+            onChange={(e) => setSub(e.target.value)}
           />
-        </CardContent>
-        <div className="flex justify-between mt-3">
-          <Button variant="ghost">👍 Like</Button>
-          <Button variant="ghost">💬 Comment</Button>
-          <Button variant="ghost">🔄 Share</Button>
+          <input
+            className="input"
+            placeholder="Metadata URI"
+            value={subMeta}
+            onChange={(e) => setSubMeta(e.target.value)}
+          />
+          <button className="btn" onClick={addSubdomain}>
+            Add Subdomain
+          </button>
+          <ul className="mt-2">
+            {subdomains.map((s, i) => (
+              <li key={i} className="text-sm">{s}</li>
+            ))}
+          </ul>
         </div>
-      </Card>
+      )}
+
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold">Resolve Domain/Subdomain</h2>
+        <input
+          className="input"
+          placeholder="blog.example"
+          onChange={(e) => resolveName(e.target.value)}
+        />
+        <div className="text-sm mt-1">Metadata: {resolvedMeta}</div>
+      </div>
     </div>
   );
-};
-
-export default Home;
+}
